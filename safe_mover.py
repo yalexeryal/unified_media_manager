@@ -2,20 +2,20 @@ import os
 import shutil
 from pathlib import Path
 from typing import Dict, List
+from core.logger import setup_logger, get_log_file_path
 
 
 def move_duplicates_to_review(duplicates: Dict[str, List[str]], review_folder: str) -> int:
     """
     Перемещает дубликаты в папку 'На_проверку', сохраняя первый файл как оригинал.
-
-    :param duplicates: Словарь {hash: [list_of_paths]}
-    :param review_folder: Путь к папке для временного хранения дубликатов
-    :return: Количество успешно перемещенных файлов
     """
+    logger = setup_logger()
+
     review_path = Path(review_folder).resolve()
     review_path.mkdir(parents=True, exist_ok=True)
 
     moved_count = 0
+    failed_count = 0
 
     print(f"\n📦 Начало безопасного перемещения дубликатов в: {review_path}")
 
@@ -37,15 +37,21 @@ def move_duplicates_to_review(duplicates: Dict[str, List[str]], review_folder: s
                     dest = review_path / f"{stem}_{counter}{ext}"
                     counter += 1
 
-                # Перемещаем файл (shutil.move работает и для переименования, и для переноса между дисками)
+                # Перемещаем файл
                 shutil.move(dup_path, dest)
                 moved_count += 1
 
             except Exception as e:
-                print(f"  ❌ Не удалось переместить {dup_path}: {e}")
+                failed_count += 1
+                error_msg = f"Не удалось переместить файл: {dup_path}. Причина: {e}"
+                logger.error(error_msg)
 
     print("=" * 50)
     print(f"✅ Успешно перемещено файлов: {moved_count}")
+    if failed_count > 0:
+        print(f"❌ Ошибок при перемещении: {failed_count}")
+        log_path = get_log_file_path()
+        print(f"📋 Подробный лог ошибок: {log_path}")
     print(f"📁 Проверьте папку: {review_path}")
     print(
         "💡 Совет: Подержите файлы здесь несколько дней. Если все работает корректно, удалите эту папку вручную для окончательной очистки.")

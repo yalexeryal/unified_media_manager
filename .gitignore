@@ -219,7 +219,6 @@ __marimo__/
 
 # Скомпилированные Python-файлы
 *.py[cod]
-*$py.class
 
 # Отчеты и временные файлы
 *.html
@@ -240,3 +239,6 @@ Thumbs.db
 # Google API secrets
 credentials.json
 token.json
+
+# Логи ошибок
+errors.log

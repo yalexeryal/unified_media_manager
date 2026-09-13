@@ -2,6 +2,7 @@ import os
 from typing import Set, Dict, List
 from core.cloud_base import CloudDriveManager
 from core.file_utils import format_size
+from core.logger import setup_logger, get_log_file_path
 
 
 def deduplicate_cloud_folder(
@@ -13,20 +14,9 @@ def deduplicate_cloud_folder(
 ) -> Dict[str, List[str]]:
     """
     Ищет и удаляет дубликаты медиафайлов в облаке.
-
-    Алгоритм:
-    1. Рекурсивно сканирует primary_folder и собирает множество имен файлов.
-    2. Рекурсивно сканирует secondary_folder и собирает список полных путей.
-    3. Находит файлы во secondary_folder, имена которых есть в primary_folder.
-    4. Перемещает или удаляет найденные дубликаты.
-
-    :param cloud_manager: Экземпляр CloudDriveManager (Mail.ru, Яндекс или Google)
-    :param primary_folder: Папка с оригиналами (например, /фото)
-    :param secondary_folder: Папка с копиями для очистки (например, /copy/фото)
-    :param extensions: Множество расширений файлов для обработки
-    :param dry_run: Если True, только показывает, что будет сделано, не удаляет
-    :return: Словарь {имя_файла: [список_путей_дубликатов]}
     """
+    logger = setup_logger()
+
     print(f"\n{'=' * 60}")
     print(f"🔍 Поиск дубликатов в облаке")
     print(f"{'=' * 60}")
@@ -41,8 +31,9 @@ def deduplicate_cloud_folder(
     print(f"   ✅ Найдено уникальных имен файлов: {len(primary_names)}")
 
     if len(primary_names) == 0:
-        print(f"\n⚠️ ВНИМАНИЕ: В папке '{primary_folder}' не найдено файлов с указанными расширениями!")
-        print("Проверьте точное название папки (регистр важен).")
+        error_msg = f"В папке '{primary_folder}' не найдено файлов с указанными расширениями"
+        print(f"\n⚠️ ВНИМАНИЕ: {error_msg}")
+        logger.warning(error_msg)
         return {}
 
     # 2. Сканируем вторичную папку (нам нужны полные пути)
@@ -94,12 +85,16 @@ def deduplicate_cloud_folder(
                     print(f"  ✅ Удалено: {name}")
                 else:
                     failed_count += 1
+                    error_msg = f"Не удалось удалить файл из облака: {file_path}"
+                    logger.error(error_msg)
 
         print(f"\n{'=' * 60}")
         print(f"🎉 Готово!")
         print(f"  ✅ Удалено файлов: {deleted_count}")
         if failed_count > 0:
             print(f"  ❌ Ошибок при удалении: {failed_count}")
+            log_path = get_log_file_path()
+            print(f"  📋 Подробный лог ошибок: {log_path}")
         print(f"{'=' * 60}")
 
     return duplicates

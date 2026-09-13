@@ -75,7 +75,10 @@ class MailRuCloudManager(CloudDriveManager):
             self.client.clean(file_path)
             return True
         except Exception as e:
-            print(f"  ❌ Ошибка удаления {file_path}: {e}")
+            from core.logger import setup_logger
+            logger = setup_logger()
+            error_msg = f"Ошибка удаления из облака {file_path}: {e}"
+            logger.error(error_msg)
             return False
 
     def get_file_info(self, file_path: str) -> Dict[str, Any]:
@@ -89,5 +92,8 @@ class MailRuCloudManager(CloudDriveManager):
             self.client.move(source_path, dest_path)
             return True
         except Exception as e:
-            print(f"  ❌ Ошибка перемещения {source_path}: {e}")
+            from core.logger import setup_logger
+            logger = setup_logger()
+            error_msg = f"Ошибка перемещения в облаке {source_path} -> {dest_path}: {e}"
+            logger.error(error_msg)
             return False
