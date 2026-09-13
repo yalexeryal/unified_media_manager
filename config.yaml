@@ -1,0 +1,107 @@
+# ============================================================================
+# РАСШИРЕНИЯ ФАЙЛОВ
+# ============================================================================
+extensions:
+  media:
+    # Изображения
+    - .jpg
+    - .jpeg
+    - .png
+    - .gif
+    - .bmp
+    - .tiff
+    - .tif
+    - .webp
+    - .heic
+    - .raw
+    - .cr2
+    - .cr3
+    - .nef
+    - .arw
+    - .raf
+    - .dng
+    - .svg
+    - .eps
+    - .ai
+    - .psd
+    - .xcf
+    - .jpegxl
+    - .avif
+
+    # Видео
+    - .mp4
+    - .mov
+    - .avi
+    - .mkv
+    - .wmv
+    - .flv
+    - .webm
+    - .3gp
+    - .ts
+    - .mts
+    - .m2ts
+    - .mxf
+    - .vob
+
+  documents:
+    # Офисные документы
+    - .pdf
+    - .doc
+    - .docx
+    - .xls
+    - .xlsx
+    - .ppt
+    - .pptx
+    - .odt
+    - .ods
+    - .odp
+
+    # Текстовые файлы
+    - .txt
+    - .rtf
+    - .csv
+    - .tsv
+
+    # Электронные книги
+    - .epub
+    - .mobi
+    - .djvu
+    - .azw3
+    - .fb2
+    - .prc
+    - .lit
+
+    # Данные и конфиги
+#    - .json
+#    - .xml
+#    - .yaml
+#    - .yml
+
+# ============================================================================
+# ИСКЛЮЧАЕМЫЕ ПАПКИ (только имена, без путей)
+# ============================================================================
+excluded_folders:
+  media:
+    - $RECYCLE.BIN
+    - System Volume Information
+    - Windows
+    - Program Files
+    - Program Files (x86)
+    - Media_Collection
+    - node_modules
+    - .git
+    - __pycache__
+    - venv
+
+  documents:
+    - $RECYCLE.BIN
+    - System Volume Information
+    - Windows
+    - Program Files
+    - Program Files (x86)
+    - AppData
+    - Documents_Collection
+    - node_modules
+    - .git
+    - __pycache__
+    - venv

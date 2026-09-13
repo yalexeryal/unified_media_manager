@@ -216,3 +216,27 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Скомпилированные Python-файлы
+*.py[cod]
+*$py.class
+
+# Отчеты и временные файлы
+*.html
+duplicates_report.html
+
+# Папка "На проверку" с дубликатами
+На_проверку/
+
+# IDE
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Google API secrets
+credentials.json
+token.json
